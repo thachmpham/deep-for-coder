@@ -1,0 +1,93 @@
+--------------- Jupiter Notebook
+Notebook is a document made of cells.
+Each cell can contain markdown text or python code.
+
+
+
+--------------- Is this a bird system
+
+
+dls = DataBlock(
+    blocks=(ImageBlock, CategoryBlock),
+    # ImageBlock: input type, 
+    # CategoryBlock: output type
+    get_items=get_image_files, 
+    # get_items: where data to train from
+    splitter=RandomSplitter(valid_pct=0.2, seed=42),
+    get_y=parent_label,
+    # get_y: correct label of the photo
+    item_tfms=[Resize(192, method='squish')]
+).dataloaders(path, bs=32)
+
+dls.show_batch(max_n=6)
+
+
+learn = vision_learner(dls, resnet18, metrics=error_rate)
+'''
+dls: data
+resnet18: model
+'''
+learn.fine_tune(3)
+
+
+
+----- DataBlock
+dblock = DataBlock(get_items=get_image_files)
+dblock.datasets(path)
+
+# get_items: let dblock know how to extract/explore path
+# path: path to data to train from
+
+# get_x: how to get input
+# get_y: how to get label/tag
+
+
+
+def label_func(filename):
+    return 'cat' if filename.name[0].isupper() else 'dog'
+dblock = DataBlock(get_items = get_image_files,
+                  get_y = label_func)
+                  
+# if first character is upper then label 'cat'
+# else label dog
+
+
+dsets[0]
+(Path('/home/mt/.fastai/data/oxford-iiit-pet/annotations/trimaps/Maine_Coon_265.png'),
+  'cat'),
+  
+dsets[10]
+(Path('/home/mt/.fastai/data/oxford-iiit-pet/annotations/trimaps/saint_bernard_19.png'),
+  'dog')
+
+
+----- Supervised Learning
+dataset is a collection of examples (x,y)
+x: feature vector
+y: label
+
+
+supervised learning algorithm uses dataset to produce a model
+
+A “model” is the output of a machine learning algorithm run on data.
+a model take x, deducing y
+
+
+
+-----
+To get our data ready for a model,
+we need to put it in a DataLoaders object
+
+
+A pre-trained model refers to a model or a saved network created by someone else and trained on a large dataset to solve a similar problem
+
+
+An epoch is a term used in machine learning and indicates the number of passes of the entire training dataset the machine learning algorithm has completed
+
+
+-----
+https://github.com/fastai/fastai/blob/master/nbs/50_tutorial.datablock.ipynb
+https://www.youtube.com/watch?v=NzWadB_fcTE&list=PLexqeSjf_hzOfQMAz9UdDb-TaP13W0WQ_
+
+
+
