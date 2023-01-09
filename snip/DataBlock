@@ -1,0 +1,47 @@
+--------------- Definition ---------------
+What is DataBlock
+ - Generic container to quickly build Datasets and DataLoaders.
+
+What is Datasets, DataLoaders
+- Data to work with model
+- A Datasets creates a tuple from items (typically input,target).
+
+
+--------------- API ---------------
+---- Constructor ---- 
+
+dblock = DataBlock(
+    blocks    = (ImageBlock, CategoryBlock),
+    # our inputs are images and our targets are categories
+    
+    get_items = get_image_files,
+    # how to extract/explore/get_items in the input path
+    
+    get_y     = label_func,
+    # how to get label for each input file
+    
+    splitter  = RandomSplitter())
+    
+    item_tfms = Resize(224)
+
+
+---- DataSets ---- 
+# create DataSets from folder path/"images"
+dsets = dblock.datasets(path/"images")
+
+# get the first item
+dsets.train[0]
+dsets.train[0][0]
+
+
+---- DataLoader ---- 
+# create dataloaders from folder path/"images"
+dls = dblock.dataloaders(path/"images")
+
+dls.show_batch()
+
+
+--------------- ref ---------------
+https://docs.fast.ai/tutorial.datablock.html
+https://muttoni.github.io/blog/machine-learning/fastai/2020/12/26/datablocks-vs-dataloaders.html
+
